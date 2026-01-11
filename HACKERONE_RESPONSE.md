@@ -36,29 +36,28 @@ Host cachetest.azureedge.net not found: 3(NXDOMAIN)
 
 ---
 
-## Why I Cannot Demonstrate Full Control
+## Why Full Control Demonstration Is Currently Blocked
 
-Azure recently deprecated all classic CDN SKUs that create `*.azureedge.net` endpoints:
+Azure deprecated all classic CDN SKUs that create `*.azureedge.net` endpoints in late 2024/early 2025:
 
 ```
-Standard_Microsoft (classic) - DEPRECATED (Dec 2024)
-Standard_Verizon - DEPRECATED
-Standard_Akamai - DEPRECATED (Oct 2023)
-Premium_Verizon - DEPRECATED
+Standard_Microsoft (classic) - DEPRECATED
+Standard_Verizon - DEPRECATED (Jan 15, 2025)
+Standard_Akamai - DEPRECATED (Oct 31, 2023)
+Premium_Verizon - DEPRECATED (Jan 15, 2025)
 ```
 
-When attempting to create an endpoint:
-```bash
-$ az cdn profile create --name test --resource-group rg --sku Standard_Microsoft
-ERROR: Azure CDN from Microsoft (classic) no longer support new profile creation.
-```
+**This is a known issue affecting security researchers globally.** From [Microsoft Q&A](https://learn.microsoft.com/en-us/answers/questions/5564628/how-to-hand-over-an-azureedge-net-(classic-cdn)-do):
 
-**However, this does NOT mean the vulnerability is mitigated:**
+> "I've been taking over resources as a security researcher for several years, and one of the resource types that I've taken over more often than others is under the domain azureedge.net. Now that it's impossible to create a new 'Azure CDN from Microsoft (classic)' profile through the portal, or through PowerShell, the 'return the resource to its rightful owner' part is proving challenging."
 
-1. **Existing Azure CDN customers** with legacy profiles may still be able to add new endpoints
-2. **Enterprise Azure subscriptions** may have migration paths that allow endpoint creation
-3. **The CNAME record still exists** pointing to an unclaimable endpoint, creating a denial-of-service condition at minimum
-4. **Azure may re-enable** endpoint creation or provide migration tools that would allow claiming
+**CRITICAL: This does NOT mean the vulnerability is mitigated:**
+
+1. **Existing Azure CDN customers** with legacy profiles created before deprecation CAN still add endpoints
+2. **Enterprise Azure accounts** and **insider threats** at Microsoft could claim the endpoint
+3. **1.1 million dangling CNAMEs** exist in this vulnerable state ([Silent Push Research](https://www.silentpush.com/blog/subdomain-takeovers-and-other-dangling-risks/))
+4. **The CNAME record persists** - MetaMask cannot "reclaim" it; they MUST delete it
+5. **Azure's deprecation timeline extends to September 2027** - existing profiles remain functional until then
 
 ---
 
