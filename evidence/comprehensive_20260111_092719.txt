@@ -1,0 +1,82 @@
+================================================================================
+COMPREHENSIVE SUBDOMAIN TAKEOVER EVIDENCE
+Target: static.dev.execution.metamask.io
+Generated: 2026-01-11 17:27:19 UTC
+================================================================================
+
+
+[SECTION 1: DNS CHAIN DOCUMENTATION]
+================================================================================
+
+1.1 CNAME Record Query:
+static.dev.execution.metamask.io. 60 IN	CNAME	cachetest.azureedge.net.
+
+1.2 Target Endpoint Resolution (NXDOMAIN Expected):
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> cachetest.azureedge.net A
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 43239
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;cachetest.azureedge.net.	IN	A
+
+;; AUTHORITY SECTION:
+azureedge.net.		60	IN	SOA	ns1-06.azure-dns.com. msnhst.microsoft.com. 10001 900 300 604800 60
+
+;; Query time: 12 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Sun Jan 11 09:27:19 PST 2026
+;; MSG SIZE  rcvd: 125
+
+
+1.3 SOA Record for azureedge.net:
+azureedge.net.		3294	IN	SOA	ns1-06.azure-dns.com. msnhst.microsoft.com. 10001 900 300 604800 60
+
+[SECTION 2: MULTI-RESOLVER VERIFICATION]
+================================================================================
+
+2.x Google DNS (8.8.8.8):
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 14703
+
+2.x Cloudflare DNS (1.1.1.1):
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 12208
+
+2.x Quad9 DNS (9.9.9.9):
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 13464
+
+2.x OpenDNS DNS (208.67.222.222):
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 20136
+
+[SECTION 3: AZURE CDN NAME AVAILABILITY CHECK]
+================================================================================
+This proves the endpoint name status in Azure's system.
+
+3.1 Name availability for 'cachetest':
+{
+  "message": "Name not available",
+  "nameAvailable": false,
+  "reason": "Name is already in use"
+}
+
+3.2 Control test - random available name:
+{
+  "message": null,
+  "nameAvailable": true,
+  "reason": null
+}
+
+[SECTION 4: HOST COMMAND VERIFICATION]
+================================================================================
+Host static.dev.execution.metamask.io not found: 3(NXDOMAIN)
+
+[SECTION 5: SUBFINDER SUBDOMAIN ENUMERATION]
+================================================================================
+static.dev.execution.metamask.io
+
+=================================================================================
+END OF EVIDENCE
+=================================================================================
