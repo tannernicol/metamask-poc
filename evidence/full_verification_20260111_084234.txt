@@ -1,0 +1,52 @@
+=====================================================
+SUBDOMAIN TAKEOVER VERIFICATION LOG
+Target: static.dev.execution.metamask.io
+Timestamp: 2026-01-11 16:42:34 UTC
+Researcher: snicklefritz (HackerOne)
+=====================================================
+
+[TEST 1] CNAME Record Query - Google DNS (8.8.8.8)
+Command: dig static.dev.execution.metamask.io CNAME @8.8.8.8 +noall +answer
+static.dev.execution.metamask.io. 60 IN	CNAME	cachetest.azureedge.net.
+
+[TEST 2] CNAME Record Query - Cloudflare DNS (1.1.1.1)
+Command: dig static.dev.execution.metamask.io CNAME @1.1.1.1 +noall +answer
+static.dev.execution.metamask.io. 60 IN	CNAME	cachetest.azureedge.net.
+
+[TEST 3] Azure CDN Endpoint Resolution (FULL OUTPUT)
+Command: dig cachetest.azureedge.net @8.8.8.8 A
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> cachetest.azureedge.net @8.8.8.8 A
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 4418
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;cachetest.azureedge.net.	IN	A
+
+;; AUTHORITY SECTION:
+azureedge.net.		60	IN	SOA	ns1-06.azure-dns.com. msnhst.microsoft.com. 10001 900 300 604800 60
+
+;; Query time: 22 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Sun Jan 11 08:42:34 PST 2026
+;; MSG SIZE  rcvd: 125
+
+[TEST 4] Host Command Verification
+Command: host static.dev.execution.metamask.io
+Host static.dev.execution.metamask.io not found: 3(NXDOMAIN)
+
+[TEST 5] nslookup Verification
+Command: nslookup cachetest.azureedge.net 8.8.8.8
+Server:		8.8.8.8
+Address:	8.8.8.8#53
+
+** server can't find cachetest.azureedge.net: NXDOMAIN
+
+=====================================================
+CONCLUSION: NXDOMAIN confirmed - endpoint unclaimed
+Vulnerability Status: ACTIVE
+=====================================================

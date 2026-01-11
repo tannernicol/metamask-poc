@@ -1,0 +1,71 @@
+=====================================================
+SUBDOMAIN TAKEOVER VERIFICATION LOG
+Target: static.dev.execution.metamask.io
+Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+=====================================================
+
+[TEST 1] CNAME Record Query - Google DNS (8.8.8.8)
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> static.dev.execution.metamask.io CNAME @8.8.8.8
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40477
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;static.dev.execution.metamask.io. IN	CNAME
+
+;; ANSWER SECTION:
+static.dev.execution.metamask.io. 60 IN	CNAME	cachetest.azureedge.net.
+
+;; Query time: 17 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Sun Jan 11 08:42:25 PST 2026
+;; MSG SIZE  rcvd: 98
+
+
+[TEST 2] CNAME Record Query - Cloudflare DNS (1.1.1.1)
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> static.dev.execution.metamask.io CNAME @1.1.1.1
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5735
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;static.dev.execution.metamask.io. IN	CNAME
+
+;; ANSWER SECTION:
+static.dev.execution.metamask.io. 60 IN	CNAME	cachetest.azureedge.net.
+
+;; Query time: 10 msec
+;; SERVER: 1.1.1.1#53(1.1.1.1) (UDP)
+;; WHEN: Sun Jan 11 08:42:25 PST 2026
+;; MSG SIZE  rcvd: 98
+
+
+[TEST 3] Azure CDN Endpoint Resolution - Google DNS
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> cachetest.azureedge.net @8.8.8.8 A
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 40806
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;cachetest.azureedge.net.	IN	A
+
+;; AUTHORITY SECTION:
+azureedge.net.		60	IN	SOA	ns1-06.azure-dns.com. msnhst.microsoft.com. 10001 900 300 604800 60
+
+;; Query time: 24 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Sun Jan 11 08:42:25 PST 2026
+;; MSG SIZE  rcvd: 125
+
