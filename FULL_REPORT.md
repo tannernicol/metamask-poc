@@ -152,7 +152,22 @@ The subdomain appears in automated enumeration tools, confirming it is a valid, 
 
 ---
 
-## Evidence Section 6: HTTP Response Check
+## Evidence Section 6: Nuclei Automated Scanner Detection
+
+```bash
+$ nuclei -u static.dev.execution.metamask.io -tags takeover
+
+[azure-takeover-detection] [dns] [high] static.dev.execution.metamask.io "cachetest.azureedge.net"
+[detect-dangling-cname] [dns] [info] static.dev.execution.metamask.io "cachetest.azureedge.net"
+```
+
+**Two independent nuclei templates detected the vulnerability:**
+- `azure-takeover-detection` - HIGH severity - Azure-specific takeover detection
+- `detect-dangling-cname` - INFO - Generic dangling CNAME detection
+
+---
+
+## Evidence Section 7: HTTP Response Check
 
 ```bash
 $ curl -sI https://static.dev.execution.metamask.io
@@ -278,12 +293,15 @@ static.dev.execution.metamask.io.  60  IN  CNAME  cachetest.azureedge.net.
 
 ## Conclusion
 
-This report provides comprehensive evidence of a subdomain takeover vulnerability:
+This report provides **7 independent evidence sections** confirming the subdomain takeover vulnerability:
 
-- **DNS Evidence**: CNAME confirmed, NXDOMAIN on 4 major resolvers
-- **Azure API**: Endpoint name status verified via REST API
-- **Automated Tools**: Subfinder enumeration confirms subdomain exists
-- **Industry Standards**: Meets all OWASP/HackerOne validation criteria
+1. **DNS Chain**: CNAME record with full dig output
+2. **Multi-Resolver**: NXDOMAIN on Google, Cloudflare, Quad9, OpenDNS
+3. **Azure API**: REST API endpoint status verification
+4. **Host Command**: Independent CLI verification
+5. **Subfinder**: Automated subdomain enumeration
+6. **Nuclei**: `[azure-takeover-detection] [high]` detection triggered
+7. **HTTP Check**: Connection failure confirmation
 
 The Azure CDN Classic deprecation is a documented, industry-wide issue affecting security researchers globally. The DNS evidence is irrefutable and independently verifiable. The remediation is simple: delete the CNAME record.
 
